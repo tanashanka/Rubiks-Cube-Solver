@@ -1,0 +1,31 @@
+1. Cube Representation
+    - Build a class for cube representation
+        - Corner/edge Ori/Per
+    - Make move fn for basic turns (UDRLFB)
+        - Derive X2/X' from composing basic turns
+        - Same move 4x should come back to solved
+
+2. Scrambling/Solved Check
+    - Write fn to apply random sequence of moves to a solved cube (test cases)
+    - Write is_solved() check
+    Tool for testing later stages
+
+3. Coordinate Functions
+    - Implement coordinate fns from coordlevel.htm, UDSliceCoord.htm
+        - CorOri, EdgOri, UDSlice, CorPer, EdgPer
+        - Also include inverse fn (coordinate -> corresponding cube state)
+        - Verify coords change correctly based on moves applied
+
+4. Generate Move Tables
+    - Build 18-move transition table for each raw cooridnate (movetables.htm)
+        - For each coord, reconstruct cube state with inverse fn
+        - Apply each of 18 moves; record resulting coord
+
+5. Generate Pruning Tables 
+    - idrk read the papers again
+
+6. Phase 1 Search
+
+7. Phase 2 Search
+
+8. Full Integration
