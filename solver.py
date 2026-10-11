@@ -1,7 +1,7 @@
 ##### Implements the solving algorithm #####
 import time
 from cube import CubieCube
-from constants import N_MOVES, PHASE_2_MOVES
+from constants import N_MOVES, PHASE_2_MOVES, N_SLICE_SORTED_P2
 from coordinates import get_twist, get_flip, get_slice_coord, get_slice_sorted, get_corners, get_ud_edges
 from pruning import pack_twist, pack_flip, pack_corners, pack_ud_edges
 
@@ -147,7 +147,7 @@ def solve_phase2(cube, max_moves, tables, deadline=None):
     """
     corners = get_corners(cube)
     ud_edges = get_ud_edges(cube)
-    slice_sorted_p2 = get_slice_sorted(cube) % 24 # Return only the sorted values (0-23)
+    slice_sorted_p2 = get_slice_sorted(cube) % N_SLICE_SORTED_P2
 
     for threshold in range(max_moves +1):
         result = phase2_search(corners, ud_edges, slice_sorted_p2, [], threshold, -1, tables, deadline)
