@@ -168,7 +168,7 @@ def solve_phase2(cube, max_moves, tables, deadline=None):
 
 ##### Overall solve #####
 # Fine tune the move counts for solutions by lowering target and increasing time_limit
-def solve(cube, tables, target=20, time_limit=10, first_pass_max=30):
+def solve(cube, tables, target=20, time_limit=10, first_pass_max=25):
     """
     Full two-phase solve
     Find a solution quickly, then keep shortening it until it has target moves or fewer, or until time_limit seconds have passed
