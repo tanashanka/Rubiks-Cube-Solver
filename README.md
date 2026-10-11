@@ -38,6 +38,8 @@ Regardless of input mode, the solution is shown in scramble notation with its le
 
 ``R1 U2 F3 L3 U1 B2 D1 R3 F2 L2 R3 B1 D1 F2 U3 R2 U1 L2 B2 D1 (20f)``
 
+The first time the program is run, it will need to generate the move tables and pruning tables, which takes a few seconds. However, these tables are cached in `%LOCALAPPDATA%\Rubiks-Cube-Solver`, and therefore will not need to be regenerated every subsequent time. This is necessary for the algorithm to create solutions quickly.
+
 ## How it works
 **Cube Model:** A cube state is represented in the program by the orientation and permutation of the 8 corners and 12 edges. Moves are composed with a group operation. The code rejects impossible cube states (wrong orientation totals or parity).
 
@@ -59,11 +61,13 @@ Each cube state can be described using a unique combination of these coordinates
 **The Two-Phase Algorithm:** Phase 1 uses Iterative Deepening A* (IDA*) to reach a cube state in the subgroup G1 = <U, D, R2, L2, F2, B2> (all pieces are oriented and the middle-slice edges are in the middle-slice). Phase 2 solves the cube only using the moves in the subgroup so that it never leaves this subgroup which includes the solved state. The solver tries many phase-1 solutions of increasing move counts so that the combination of phase-1 + phase-2 moves is the lowest possible until it reaches the target length (20 moves) or the time limit (10 seconds).
 
 ## Results
-Measured on 100 random 25-move scrambles:
+Measured on 200 random scrambles:
 
-XXX
+|Target length|Time limit|Solved|Median time|Slowest|Mean length|
+|---|---|---|---|---|---|
+|[20 moves]|[10s]|[200 of 200]|[0.36s]|[6.6s]|[21.8 moves]
 
-The solver aims for a short solution quickly, not a provably optimal one.
+The solver returns the first solution it finds, then keeps looking for a shorter one until it reaches the target length (20 moves) or the time limit (10 seconds). It aims for a short solution quickly, not an optimal one.
 
 ## Project Layout
 | File | Purpose |
@@ -77,6 +81,7 @@ The solver aims for a short solution quickly, not a provably optimal one.
 |`face.py`, `notation.py`|Facelet-string and move-notation parsing, input checks|
 |`solve_input.py`|Entry points from user text to a solution or an error message|
 |`cube_grid.py`, `gui.py`|The Tkinter interface|
+|`test_solver.py`, `test_tables.py`, `test_encoding.py`|Test suite for computationally complex functions|
 
 ## Limitations
 - Solutions are usually 20-22 moves; the solver does not find optimal solutions (any state on a 3x3 Rubik's Cube has been proven to have an optimal solution of 20 moves or less).
@@ -89,9 +94,9 @@ What is different in this project:
 
 - Pruning tables split into two smaller tables per phase, combined with max(), instead of symmetry-reduced combined tables
 - Time-limited search that returns a first solution quickly and then shortens it
-- The Tkinter interface
+- The Tkinter interface and clickable cube editor
 - Input checking and cube validation with readable error messages
-- XXXXXXXXXXXXXXX TEST SUITE
+- A test suite for the most computationally complex functions (encoding a cube in coordinates, generating tables, and solving)
 - Windows .exe packaging
 
 ## License

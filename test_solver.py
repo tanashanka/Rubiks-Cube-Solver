@@ -16,6 +16,6 @@ facelet_str = to_facelet_string(c)
 print("Scramble:", scramble_moves)
 print("Scramble notation:", moves_to_notation(scramble_moves))
 
-solution = solve(c, tables, target=22, time_limit=10, first_pass_max=30)
+solution = solve(c, tables, target=20, time_limit=10, first_pass_max=25)
 
 print("Solution:", moves_to_notation(solution), f"({len(solution)}f)")

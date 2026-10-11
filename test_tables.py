@@ -1,10 +1,7 @@
 ##### Test movetable-generating functions #####
-from cube import CubieCube, moveCube
-from constants import Move, N_TWIST, N_FLIP, N_SLICE, N_SLICE_SORTED, N_SLICE_SORTED_P2, N_CORNERS, N_UD_EDGES, N_MOVES, PHASE_2_MOVES
-from scramble import scramble
+from cube import CubieCube
 from coordinates import get_twist, set_twist, get_flip, set_flip, get_slice_coord, set_slice_coord, get_slice_sorted, set_slice_sorted, get_corners, set_corners, get_ud_edges, set_ud_edges
 from moves import twist_table, flip_table, slice_table, corners_table, ud_edges_table, slice_sorted_table
-from pruning import pack_twist, build_twist_slice_table, pack_flip, build_flip_slice_table, pack_corners, build_corners_slice_p2_table, pack_ud_edges, build_ud_edges_slice_p2_table
 from random import randrange
 
 
@@ -118,7 +115,7 @@ def test_slice_sorted_p2_table_matches_direct_computation(samples=200):
 
 
 if __name__ == "__main__":
-    """
+
     print("Test 1: twist table matches direct computation... ")
     failures1 = test_twist_table_matches_direct_computation()
     print(f"{len(failures1)} failures out of 1000")
@@ -154,4 +151,3 @@ if __name__ == "__main__":
     print(f"{len(failures6)} failures out of 1000")
     if failures6:
         print(f"First failing case: {failures6[0]}")
-    """
