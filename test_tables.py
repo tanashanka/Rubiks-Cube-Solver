@@ -1,6 +1,9 @@
 ##### Test movetable-generating functions #####
 from cube import CubieCube
-from coordinates import get_twist, set_twist, get_flip, set_flip, get_slice_coord, set_slice_coord, get_slice_sorted, set_slice_sorted, get_corners, set_corners, get_ud_edges, set_ud_edges
+from coordinates import (get_twist, set_twist, get_flip, set_flip, 
+                         get_slice_coord, set_slice_coord, get_slice_sorted, set_slice_sorted, 
+                         get_corners, set_corners, get_ud_edges, set_ud_edges
+)
 from moves import twist_table, flip_table, slice_table, corners_table, ud_edges_table, slice_sorted_table
 from random import randrange
 

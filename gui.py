@@ -58,7 +58,7 @@ class SolverWindow:
         """
         try:
             self.results.put(('tables', build_all_tables(verbose=False)))
-        except Exception as e: # Ends thread in case of exception instead of the window saying "Loading tables..." forever
+        except Exception as e:
             self.results.put(('load_error', str(e)))
 
     def run_solve(self, mode, text):
@@ -66,7 +66,7 @@ class SolverWindow:
             solution, error = solve_from_input(mode, text, self.tables)
         except Exception as e:
             solution, error = None, f"Something went wrong: {e}"
-        self.results.put(('result', solution, error)) # Posts 'result' tuple
+        self.results.put(('result', solution, error))
 
     ## Main thread code ##
 
@@ -84,7 +84,7 @@ class SolverWindow:
         else:
             text = self.input_box.get('1.0', 'end')
         self.solve_button.config(state='disabled') # No double clicks of Solve button while solving
-        self.status.config(text="Solving...") # Update the status
+        self.status.config(text="Solving...")
         threading.Thread(target=self.run_solve, args=(mode, text), daemon=True).start() # Start run_solve in the background
 
     def check_queue(self):
@@ -92,18 +92,18 @@ class SolverWindow:
         Runs every 100ms on the main thread; picks up anything produced
         """
         try:
-            while True: # Runs the whole queue, stops when Empty is raises
-                item = self.results.get_nowait() # Take the next item off the queue without waiting; if queue is empty then raises queue.Empty
+            while True: # Runs the whole queue
+                item = self.results.get_nowait()
                 if item[0] == 'tables': # Tables have loaded
-                    self.tables = item[1] # Keep tables
-                    self.status.config(text="Ready.") # Update status
-                    self.solve_button.config(state='normal') # Enable Solve button
+                    self.tables = item[1]
+                    self.status.config(text="Ready.")
+                    self.solve_button.config(state='normal')
                 elif item[0] == 'load_error': # Tables loading failed
                     self.status.config(text=f"Could not load tables: {item[1]}")
                 elif item[0] == 'result': # Solve is finished
-                    _, solution, error = item # Unpacks item
-                    self.status.config(text="Ready.") # Update status
-                    self.solve_button.config(state='normal') # Re-enable Solve button
+                    _, solution, error = item
+                    self.status.config(text="Ready.")
+                    self.solve_button.config(state='normal')
                     self.show_output(solution if solution else error, is_error=bool(error)) # Pick whichever one of solution or error exists
         except queue.Empty:
             pass

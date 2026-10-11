@@ -19,7 +19,7 @@ FACE_POSITION = {'U': (3,0), 'L': (0,3), 'F': (3,3), 'R': (6,3), 'B': (9,3), 'D'
 
 class CubeGrid(ttk.Frame):
     """
-    Shows the cube as an unfolded net. Pick a color in the, then left click stickers to paint them, right click to erase. Center stickers are fixed. Starts as a solved cube.
+    Shows the cube as an unfolded net. Pick a color in the palette, then left click stickers to paint them, right click to erase. Center stickers are fixed. Starts as a solved cube.
     Sticker i of facelet string is face FACE_ORDER[i // 9], row (i % 9) // 3, column i % 3.
     """
     def __init__(self, parent):

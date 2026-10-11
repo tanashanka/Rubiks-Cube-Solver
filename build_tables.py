@@ -25,7 +25,7 @@ Tables = namedtuple('Tables', [
     'corners_slice_table', 'ud_edges_slice_table'
 ])
 
-CACHE_VERSION = 1 # Bump for changes to coord, move, or pruning code
+CACHE_VERSION = 1
 
 def cache_path():
     """

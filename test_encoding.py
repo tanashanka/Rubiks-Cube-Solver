@@ -7,7 +7,6 @@ from moves import twist_table, flip_table, slice_table, corners_table, ud_edges_
 from random import randrange
 
 
-# Applying the same move 4 times should return the cube to solved
 def test_four_moves_to_solved(trials=1000):
     failures = []
     for trial in range(trials):
@@ -26,11 +25,10 @@ def inv_move(m):
     """
     Find the inverse of a given move m
     """
-    col, k = divmod(m, 3) # Divides m by 3, puts quotient into col, remainder into k
-    return 3 * col + (2 - k) # Inverse of moveCube formula
+    col, k = divmod(m, 3)
+    return 3 * col + (2 - k)
 
 
-# Inverse scramble moves test
 def test_reverse_moves(trials=1000, moves=25):
     """
     Do inverse moves in reverse order of the scramble
@@ -38,15 +36,14 @@ def test_reverse_moves(trials=1000, moves=25):
     failures = []
     for trial in range(trials):
         c = CubieCube()
-        move_list = scramble(c, moves) # List of 25-move scramble
-        for m in reversed(move_list): # Reverses the moves generated from scramble()
+        move_list = scramble(c, moves)
+        for m in reversed(move_list):
             c.apply_move(inv_move(m))
         if not c.is_solved():
             failures.append((trial,move_list))
     return failures
 
 
-# Inverse scramble state test
 def test_inv_cube_state(trials=1000, moves=25):
     """
     Reverses the moves done by a given scramble to return a cube to solved
@@ -54,16 +51,15 @@ def test_inv_cube_state(trials=1000, moves=25):
     failures = []
     for trial in range(trials):
         c = CubieCube()
-        move_list = scramble(c, moves) # List of 25-move scramble
+        move_list = scramble(c, moves) 
         d = CubieCube()
-        c.inverse_cubie_cube(d) # Computes inverse of cubiecube
-        c.multiply(d) # Multiplies cubiecube with its inverse
+        c.inverse_cubie_cube(d) 
+        c.multiply(d)
         if not c.is_solved():
             failures.append((trial,move_list))
     return failures
 
 
-# get_/set_twist roundtrip test
 def test_twist_roundtrip(trials=1000, moves=25):
     """
     Checks that recomputing the coordinate integer via set_twist returns the same value as computing the integer through get_twist and an original scramble
@@ -83,7 +79,6 @@ def test_twist_roundtrip(trials=1000, moves=25):
     return failures
 
 
-# set_twist to get_twist for every coord
 def test_twist_exhaustive():
     """
     Tests the set_twist -> get_twist direction for every coordinate value
@@ -97,8 +92,6 @@ def test_twist_exhaustive():
     return failures
 
 
-
-# get_/set_flip roundtrip test
 def test_flip_roundtrip(trials=1000, moves=25):
     """
     Checks that recomputing the coordinate integer via set_flip returns the same value as computing the integer through get_flip and an original scramble
@@ -117,8 +110,6 @@ def test_flip_roundtrip(trials=1000, moves=25):
             failures.append((trial, original, recomputed))
     return failures
 
-
-# set_flip to get_flip for every coord
 def test_flip_exhaustive():
     """
     Tests the set_flip -> get_flip direction for every coordinate value
@@ -132,7 +123,6 @@ def test_flip_exhaustive():
     return failures
 
 
-# get_/get_slice_coord roundtrip test
 def test_slice_roundtrip(trials=1000, moves=25):
     """
     Tests that recomputing unsorted slice coord via set_slice_coord returns the same value as computing the integer through get_slice_coord and an original scramble
@@ -152,7 +142,6 @@ def test_slice_roundtrip(trials=1000, moves=25):
     return failures
 
 
-# get_/set_slice_sorted roundtrip test
 def test_slice_sorted_roundtrip_exhaustive():
     """
     Tests that recomputing sorted slice coord via set_slice_sorted returns the same value as computing the integer through get_slice_sorted for all coordinate values

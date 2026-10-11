@@ -1,6 +1,5 @@
 ##### Describes the cube at the cubie level in terms of orientation and permutation of corners and edges #####
 from constants import Color, Corner as Cor, Edge as Edg
-from random import randrange
 
 
 ##### Basic six moves described by piece permutations and changes in orientation #####
@@ -47,9 +46,9 @@ CUBE_OK = True # Verification for testing
 class CubieCube:
     """
     Represents a cube by the permutations and orientaitons of its corner and edge cubies
-    Also represents the 18 moves (and maybe the 48 symmetries)
+    Also represents the 18 moves
     """
-    def __init__(self, cp=None, co=None, ep=None, eo=None): # 'None' so that list creation happens in function body
+    def __init__(self, cp=None, co=None, ep=None, eo=None):
         """
         Initialize corner/edge permutations/orientations
         cp: corner permutation
@@ -99,13 +98,13 @@ class CubieCube:
         """
         Multiply one cubie cube with another cubie cube, only corners
         """
-        # self.cp[b.cp[i]] (Apply self, then b):
+        # self.cp[b.cp[i]] (Apply move self, then b):
         #   i = position in index
         #   b.cp[i] = corner in position i after b
         #   self.cp[b.cp[i]] = uses b.cp[i] as an index, corner c goes to position b.cp[i] according to self.cp
         # b.cp[i] = what position did the piece at i come from, self.cp[b.cp[i]] = the piece that was at that position when b was applied
-        c_permutation = [0]*8 # Blank list for corner permutation
-        c_orientation = [0]*8 # Blank list for corner orientation
+        c_permutation = [0]*8 # Blank list
+        c_orientation = [0]*8
         for i in range(8):
             c_permutation[i] = self.cp[b.cp[i]]
             c_orientation[i] = (self.co[b.cp[i]] + b.co[i]) % 3 # Corner orientation mod 3
@@ -138,20 +137,18 @@ class CubieCube:
         for e in Edg:
             inv.ep[self.ep[e]] = e # Doing inv on e followed by self on e results in e
         for e in Edg:
-            inv.eo[e] = self.eo[inv.ep[e]] # eo is mod 2; copying the eo result from self on inv will result in the inverse (0*0 = 0, 1*1 = 1)
+            inv.eo[e] = self.eo[inv.ep[e]]
         for c in Cor:
             inv.cp[self.cp[c]] = c
         for c in Cor:
             orientation = self.co[inv.cp[c]] # Orientation of self
-            # Computing inverse orientation of self; self is not mod 2, so cannot just copy orientation
-            # Make self negative then add 3; inv.co + self.co = 0; inv and self are inverses
             inv.co[c] = (-orientation)
             if inv.co[c] < 0:
                 inv.co[c] += 3
 
     def apply_move(self, move): 
         """
-        convenience wrapper around multiply()
+        Convenience wrapper around multiply()
         """
         self.multiply(moveCube[move]) # moveCube defined below
 
@@ -175,12 +172,12 @@ basicMoveCube = {
 }
 
 # Building all 18 moves from basic 6
-moveCube = [None] * 18 # Empty list for all 18 moves
+moveCube = [None] * 18 # Empty list
 for col in Color:
     cc = CubieCube()
     for k in range(3): # Runs loop 3 times, building up moves consisting of 1/2/3 quarter turns
         cc.multiply(basicMoveCube[col])
-        moveCube[3 * col + k] = CubieCube(cc.cp, cc.co, cc.ep, cc.eo) # moveCube will increment for each move, storing each move in its corresponding place in the moveCube list
+        moveCube[3 * col + k] = CubieCube(cc.cp, cc.co, cc.ep, cc.eo)
 
 
 ##########################################################################################################################################################

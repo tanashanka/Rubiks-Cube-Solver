@@ -1,8 +1,12 @@
 ##### Generates movetables that describe the transformation of the coordinates by cube moves #####
 from cube import CubieCube, Cor, Edg
-from coordinates import get_twist, set_twist, get_flip, set_flip, get_slice_coord, set_slice_coord, get_corners, set_corners, get_ud_edges, set_ud_edges, get_slice_sorted, set_slice_sorted
-from constants import N_TWIST, N_FLIP, N_SLICE, N_SLICE_SORTED, N_SLICE_SORTED_P2, N_CORNERS, N_UD_EDGES, N_MOVES, PHASE_2_MOVES
-
+from coordinates import (get_twist, set_twist, get_flip, set_flip, 
+                         get_slice_coord, set_slice_coord, get_corners, set_corners, 
+                         get_ud_edges, set_ud_edges, get_slice_sorted, set_slice_sorted
+)
+from constants import (N_TWIST, N_FLIP, N_SLICE, N_SLICE_SORTED_P2, 
+                       N_CORNERS, N_UD_EDGES, N_MOVES, PHASE_2_MOVES
+)
 
 
 ##### Phase 1 movetables #####
@@ -11,13 +15,13 @@ def twist_table():
     Build a lookup table that tells the new twist coordinate for a given twist coordinate and move applied
     """
     table = [[0] * 18 for _ in range(N_TWIST)] # Generate an empty table where for all coordinates in N_TWIST, you can find a new coordinate for a given move applied
-    for i in range(N_TWIST): # Goes through every possible twist coord
+    for i in range(N_TWIST):
         c = CubieCube()
         set_twist(c,i) # Encode the corner orientation for each coordinate i into c.co
         for m in range(N_MOVES):
-            d = CubieCube(c.cp, c.co, c.ep, c.eo) # Copy of c with modified c.co; resets for every move
+            d = CubieCube(c.cp, c.co, c.ep, c.eo)
             d.apply_move(m) # Try each move on d
-            table[i][m] = get_twist(d) # Reads resulting twist coord from d, stores in in table at row i, column m
+            table[i][m] = get_twist(d) # Reads resulting twist coord from d, stores it in table at (i,m)
     return table
 
 

@@ -1,3 +1,4 @@
+##### Constants used throughout the project #####
 from enum import IntEnum
 
 N_TWIST = 2187 # 3^7
@@ -151,14 +152,3 @@ class Move(IntEnum):
     B1 = 15
     B2 = 16
     B3 = 17
-
-
-class Symmetry(IntEnum):
-    """
-    All basic cube symmetries
-    All 48 symmetries can be derived from these
-    """
-    ROT_URF3 = 0
-    ROT_F2 = 1
-    ROT_U4 = 2
-    MIRR_LR2 = 3

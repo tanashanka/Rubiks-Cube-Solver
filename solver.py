@@ -1,17 +1,15 @@
 ##### Implements the solving algorithm #####
 import time
 from cube import CubieCube
-from constants import Move, N_TWIST, N_FLIP, N_SLICE, N_SLICE_SORTED, N_SLICE_SORTED_P2, N_CORNERS, N_UD_EDGES, N_MOVES, PHASE_2_MOVES
-from scramble import scramble
-from coordinates import get_twist, set_twist, get_flip, set_flip, get_slice_coord, set_slice_coord, get_slice_sorted, set_slice_sorted, get_corners, set_corners, get_ud_edges, set_ud_edges
+from constants import N_MOVES, PHASE_2_MOVES
+from coordinates import get_twist, get_flip, get_slice_coord, get_slice_sorted, get_corners, get_ud_edges
 from pruning import pack_twist, pack_flip, pack_corners, pack_ud_edges
-from build_tables import build_all_tables
 
 
 ##### Phase 1 search/solve #####
 def phase1_search(twist, flip, slice_coord, path, threshold, last_face, tables):
     """
-    Recursive IDA (iterative deepening) search for a Phase 1 solution within a given movecount threshold
+    Recursive IDA* search for a Phase 1 solution within a given movecount threshold
     
     twist, flip, slice_coord = current search node's coords
     path = moves taken so far
@@ -27,20 +25,19 @@ def phase1_search(twist, flip, slice_coord, path, threshold, last_face, tables):
 
     lower_bound = max(tables.twist_slice_table[pack_twist(twist, slice_coord)], 
                       tables.flip_slice_table[pack_flip(flip, slice_coord)])
-    # Calculate lower bound for phase 1 search using the max distance value from twist/flip slice tables
 
     movecount = len(path)
     if movecount + lower_bound > threshold:
-        return None # If movecount + lower bound > threshold, prune this branch; can't finish in time
+        return None
 
     if twist == 0 and flip == 0 and slice_coord == 0:
         return path # Found a Phase 1 solution
 
 
     for m in range(N_MOVES):
-        face = m // 3 # Which face of URFDLB this move is applied to
+        face = m // 3
         if face == last_face:
-            continue # Skip checking moves on the same face as previous 
+            continue
 
         new_twist = twist_table[twist][m]
         new_flip = flip_table[flip][m]
@@ -88,17 +85,15 @@ def phase1_search_all(twist, flip, slice_coord, path, threshold, last_face, tabl
 
 def solve_phase1(cube, tables):
     """
-    Find a shortest Phase 1 solution for the given cube by running phase1_search with an increasing movecount threshold up to God's Number
+    Find a shortest Phase 1 solution for the given cube by running phase1_search with an increasing movecount threshold
     Returns move list for the first/shortest threshold that succeeds
     """
-    twist =  get_twist(cube) # Get twist/flip/slice coords from the cube
+    twist =  get_twist(cube)
     flip = get_flip(cube)
     slice_coord = get_slice_coord(cube)
 
-    for threshold in range(21): # God's number = 20; 21 is an upper bound
+    for threshold in range(21):
         result = phase1_search(twist, flip, slice_coord, [], threshold, -1, tables)
-        # Calls -1 for last_face so that the the first move of a search is not skipped
-        # Start recursive search from the root position
 
         if result is not None:
             return result
@@ -180,7 +175,7 @@ def solve(cube, tables, target=20, time_limit=10, first_pass_max=25):
     slice_coord = get_slice_coord(cube)
 
     best = None
-    max_total = first_pass_max # Longest solution accepted
+    max_total = first_pass_max
 
     phase1_threshold = 0
     while phase1_threshold <= max_total and time.time() < deadline:

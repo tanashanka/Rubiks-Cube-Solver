@@ -57,10 +57,10 @@ def from_facelet_string(facelet_str):
 
     for i in range(8): # Corners
         face = cornerFacelet[i]
-        for orientation in range(3): # If a facelet is U or D color, orientation corresponds to that facelet's orientation
+        for orientation in range(3): # If a facelet is U or D color, orientation corresponds to that facelet's position
             if facelet_str[face[orientation]] in ('U', 'D'):
                 break
-        color1 = facelet_str[face[(orientation + 1) % 3]] # The other 2 stickers, clockwise
+        color1 = facelet_str[face[(orientation + 1) % 3]] # The other 2 stickers going clockwise
         color2 = facelet_str[face[(orientation + 2) % 3]]
         for j in range(8):
             color = cornerColor[j]
